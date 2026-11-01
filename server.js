@@ -63,8 +63,8 @@ const secureOrigin = origin.startsWith('https://');
 const privateHttp = process.env.ALLOW_PRIVATE_HTTP === 'true' && origin === 'http://10.200.210.117:31121';
 if (production && !secureOrigin && !privateHttp) throw new Error('Production requires HTTPS or the explicitly enabled p01 private HTTP origin.');
 const configured = ['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'].every(key => process.env[key]);
+// The platform supplies an isolated runtime DB user, distinct from the local owner.
 if ((process.env.DB_NAME && process.env.DB_NAME !== 'db_std12_p01') ||
-    (process.env.DB_USER && process.env.DB_USER !== 'std12') ||
     (process.env.DB_PORT && process.env.DB_PORT !== '3306')) throw new Error('Database configuration must match confirmed project p01.');
 const pool = configured ? mysql.createPool({
   host: process.env.DB_HOST, port: Number(process.env.DB_PORT), database: process.env.DB_NAME,
